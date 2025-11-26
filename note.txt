@@ -1,0 +1,84 @@
+.input-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  font-size: larger;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+  gap: 10px;
+}
+#input-field {
+  border: 5px solid #ddd;
+  text-align: center;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  /* display: none;
+  position: absolute; */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  z-index: 1;
+  /* width: 100%; */
+  max-height: 150px;
+  overflow-y: auto;
+}
+.dropdown-item {
+  /* position: relative; */
+  /* display: none;   */
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  z-index: 1;
+  /* width: 100%; */
+  max-height: 150px;
+  overflow-y: auto;
+}
+.dropdown-content{
+  border: 1px solid #667eea;
+  border-radius: 5px;
+  /* display: none; */
+  position: absolute;
+}
+.dropdown-item:hover {
+      background-color:#8396ee;
+    }
+
+let debounceTimer;
+function debounce(func, delay) {
+  return function(...args) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+
+const handleInput = debounce(async (txta, id) => {
+ try {
+    const response = await axios.patch(
+      `https://jsonplaceholder.typicode.com/posts/${id}`,
+      { body: txta.value }
+    );
+    txta.value = response.data.body || txta.value;
+  } catch (error) {
+    console.error("Error updating:", error);
+  }
+}, 500);
+
+<textarea spellchek="false" id="txta" class="detail-cell" oninput="handleInput(this,${item.id})">${item.body.slice(0, 500)}${item.body.length > 500 ? '...' : ''}</textarea>
+
+
+
+
+
+
+let timer;
+function debounce(func,timeout=300){
+  let timer
+  return (..args)=>{
+    clearTime(timer)
+    timer=setTimeout(()=>{function.aply(this,args)},timeout)
+  }
+}

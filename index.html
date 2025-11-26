@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pagination</title>
+    <link rel="stylesheet" href="index.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Pagination Demo</h1>
+
+      <div class="info">
+        <!-- <span id="pageInfo">Showing items 1-5 of 100</span> -->
+        <input type="text" id="search-bar" placeholder="Search..." />
+      </div>
+
+      <div class="content" id="content">
+        <table id="dataTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Detail</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr>
+              <td colspan="3" class="loading">Loading data...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- <div class="input-div">
+            <label for="input-field">Items Per Page:</label>
+            <input type="number" id="input-field" value="5">
+            <dropdown class="dropdown-content" >
+                
+                <option class="dropdown-item" value="10">10</option>
+                <option class="dropdown-item" value="20">20</option>
+                <option class="dropdown-item" value="30">30</option>
+                <option class="dropdown-item" value="40">40</option>
+                <option class="dropdown-item" value="50">50</option>
+            </dropdown>
+            
+        </div> -->
+
+      <div class="bottom">
+        <div class="input-div">
+          <label for="input-field">Items Per Page:</label>
+          <select id="input-field">
+            <option class="dropdown-item" value="5" selected>5</option>
+            <option class="dropdown-item" value="10">10</option>
+            <option class="dropdown-item" value="20">20</option>
+            <option class="dropdown-item" value="30">30</option>
+            <option class="dropdown-item" value="40">40</option>
+            <option class="dropdown-item" value="50">50</option>
+          </select>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+  </body>
+
+  <script src="index.js"></script>
+</html>
