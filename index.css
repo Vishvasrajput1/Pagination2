@@ -53,7 +53,7 @@ tbody tr:hover {
 }
 
 .highlight {
-  color: #14c88c;
+  background-color: #fff784;
   font-weight: bold;
 }
 textarea {

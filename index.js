@@ -24,16 +24,12 @@ searchInput.addEventListener(
   debounce(() => {
     searchTerm = searchInput.value.toLowerCase()
     filteredData = allPostData.filter(
-      item =>
-        item.title.toLowerCase().includes(searchTerm) ||
-        item.body.toLowerCase().includes(searchTerm)
+      item =>item.title.toLowerCase().includes(searchTerm) || item.body.toLowerCase().includes(searchTerm)
     )
-    console.log(filteredData)
     if (filteredData.length > 0 || searchTerm.trim()) {
       config.totalItems = filteredData.length
       totalPages = Math.ceil(config.totalItems / config.itemsPerPage)
       config.currentPage = 1
-      console.log(totalPages)
     }
     updateContent()
     generatePagination()
@@ -58,59 +54,31 @@ async function updateContent() {
       const result = await axios.get(
         'https://jsonplaceholder.typicode.com/posts'
       )
-      // console.log(result.data)
-
       allPostData = result.data
       config.totalItems = allPostData.length
       totalPages = Math.ceil(config.totalItems / config.itemsPerPage)
     }
     const actualData = searchTerm ? filteredData : allPostData
-    console.log('actualData', actualData, 'searchTerm', searchTerm)
-
-    document.getElementById('tableBody').innerHTML =
-      actualData.length > 0
-        ? actualData
-            .slice(start, start + config.itemsPerPage)
-            .map(
-              item => `<tr>
+    document.getElementById('tableBody').innerHTML = actualData.length > 0 ? actualData.slice(start, start + config.itemsPerPage)
+            .map((item, index) =>`<tr>
+                            <td class="no-cell">${start + index  + 1}</td>
                             <td class="id-cell">${item.id}</td>
                             <td class="title-cell">${
                               item.title.includes(searchTerm) && searchTerm
-                                ? `${item.title.slice(
-                                    0,
-                                    item.title.indexOf(searchTerm)
-                                  )}<span class="highlight">${searchTerm}</span>${item.title.slice(
-                                    item.title.indexOf(searchTerm) +
-                                      searchTerm.length
-                                  )} ${
-                                    item.title.length >
-                                    item.title.indexOf(searchTerm) +
-                                      searchTerm.length
-                                      ? '...'
-                                      : ''
-                                  }`
+                                ? `${item.title.slice(0,item.title.indexOf(searchTerm))}
+                                <span class="highlight">${searchTerm}</span>
+                                ${item.title.slice(item.title.indexOf(searchTerm) +searchTerm.length)}`
                                 : item.title
                             }</td>
                             <td class="detail-cell">${
                               item.body.includes(searchTerm) && searchTerm
-                                ? `${item.body.slice(
-                                    0,
-                                    item.body.indexOf(searchTerm)
-                                  )}<span class="highlight">${searchTerm}</span>${item.body.slice(
-                                    item.body.indexOf(searchTerm) +
-                                      searchTerm.length
-                                  )} ${
-                                    item.body.length >
-                                    item.body.indexOf(searchTerm) +
-                                      searchTerm.length
-                                      ? '...'
-                                      : ''
-                                  }`
+                                ? `${item.body.slice(0,item.body.indexOf(searchTerm))}
+                                <span class="highlight">${searchTerm}</span>
+                                ${item.body.slice(item.body.indexOf(searchTerm) +searchTerm.length)} `
                                 : item.body
                             }</td>
                     </tr>`
-            )
-            .join('')
+            ).join('')
         : `<tr><td colspan="3" class="loading">No data found</td></tr>`
   } catch (err) {
     console.log(err)
@@ -123,33 +91,21 @@ function generatePagination() {
     return
   }
   const { currentPage, maxVisiblePages } = config
-  let start = Math.max(
-    1,
-    Math.floor(currentPage - Math.floor(maxVisiblePages / 2))
-  )
+  let start = Math.max(1,Math.floor(currentPage - Math.floor(maxVisiblePages / 2)))
   let end = Math.min(totalPages, start + maxVisiblePages - 1)
-  let html = `<button onclick="goToPage(${currentPage - 1})" ${
-    currentPage === 1 ? 'disabled' : ''
-  }>❮</button>`
+  let html = `<button onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>❮</button>`
 
-  if (start > 1)
-    html += `<button onclick="goToPage(1)">1</button>${
-      start > 2 ? '<span class="ellipsis">...</span>' : ''
-    }`
+  if (start > 1) html += `<button onclick="goToPage(1)">1</button>${start > 2 ? '<span class="ellipsis">...</span>' : ''}`
 
-  for (let i = start; i <= end; i++)
-    html += `<button onclick="goToPage(${i})" ${
-      i === currentPage ? 'class="active"' : ''
-    }>${i}</button>`
+  for (let i = start; i <= end; i++) 
+    html += `<button onclick="goToPage(${i})" ${i === currentPage ? 'class="active"' : ''}>${i}</button>`
 
   if (end < totalPages)
     html += `${
       end < totalPages - 1 ? '<span class="ellipsis">...</span>' : ''
     }<button onclick="goToPage(${totalPages})">${totalPages}</button>`
 
-  html += `<button onclick="goToPage(${currentPage + 1})" ${
-    currentPage === totalPages ? 'disabled' : ''
-  }>❯</button>`
+  html += `<button onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>❯</button>`
   document.getElementById('pagination').innerHTML = html
 }
 
